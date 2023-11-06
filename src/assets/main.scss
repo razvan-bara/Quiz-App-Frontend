@@ -22,8 +22,17 @@ html, body, #app {
 
 .flex-form-item {
   flex: 1;
+  border-radius: 15px 50px 30px 5px;
+  box-shadow: 6px 10px 8px -2px rgba(225,200,200,0.75);
+  -webkit-box-shadow: 6px 10px 8px -2px rgba(225,200,200,0.75);
+  -moz-box-shadow: 6px 10px 8px -2px rgba(225,200,200,0.75);
 }
 
 .custom-notif {
   font-size: 0.9rem;
+}
+
+.bg-gradient {
+  background: rgb(131,58,180);
+  background: linear-gradient(108deg, rgba(131,58,180,1) 0%, rgba(253,29,29,0.335171568627451) 50%, rgba(252,176,69,1) 100%);
 }

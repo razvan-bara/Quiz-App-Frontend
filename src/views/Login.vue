@@ -8,12 +8,14 @@ import {useAuthStore} from "@stores/authStore.ts";
 
 const notification   = useNotification()
 const authStore = useAuthStore()
+const submitBtn = ref<HTMLButtonElement>()
 
 let loginForm = ref<LoginForm>({
   email: "rzvbara@gmail.com",
   password: "michaeljack"
 })
 function submit() : void{
+  submitBtn.value?.classList.add("is-loading")
   loginUser(loginForm.value).then(res => {
 
     if (res.status === 200) {
@@ -33,13 +35,16 @@ function submit() : void{
     }
 
     notification.notify({type:"error", title: errText});
+  }).finally( () => {
+    submitBtn.value?.classList.remove("is-loading")
   })
 }
+
 </script>
 
 <template>
   <section class="container is-max-desktop flex-form">
-    <form class="notification flex-form-item" v-on:submit.prevent="submit">
+    <form class="notification flex-form-item is-light" v-on:submit.prevent="submit">
       <label class="label">Login with your credentials</label>
       <div class="field">
         <div class="control has-icons-left">
@@ -61,7 +66,7 @@ function submit() : void{
       </div>
       <div class="field">
         <p class="control">
-          <button type="submit" class="button is-link">Submit</button>
+          <button type="submit" class="button is-success" ref="submitBtn">Submit</button>
         </p>
       </div>
     </form>

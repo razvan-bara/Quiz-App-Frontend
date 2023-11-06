@@ -3,7 +3,7 @@
 </script>
 
 <template>
-  <nav class="navbar is-link" role="navigation" aria-label="main navigation">
+  <nav class="navbar is-light has-shadow" role="navigation" aria-label="main navigation">
     <div class="navbar-brand">
       <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
         <span aria-hidden="true"></span>
@@ -15,7 +15,7 @@
     <div id="navbarBasicExample" class="navbar-menu is-active">
 
       <div class="navbar-start">
-        <router-link :to="{ name: 'home' }" class="navbar-item">
+        <router-link :to="{ name: 'home' }" class="navbar-item is-white">
           Home
         </router-link>
 
@@ -29,10 +29,10 @@
       <div class="navbar-end">
         <div class="navbar-item">
           <div class="buttons">
-            <router-link :to="{ name: 'login' }" class="button is-dark">
+            <router-link :to="{ name: 'login' }" class="button is-inverted is-primary">
               Sign up
             </router-link>
-            <router-link :to="{ name: 'login' }" class="button is-light">
+            <router-link :to="{ name: 'login' }" class="button is-primary">
               Log in
             </router-link>
           </div>
