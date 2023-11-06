@@ -9,10 +9,21 @@
     "preview": "vite preview"
   },
   "devDependencies": {
+    "node-sass": "^9.0.0",
+    "sass": "^1.69.5",
+    "sass-loader": "^13.3.2",
     "typescript": "^5.0.2",
     "vite": "^4.4.5"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
+    "@kyvg/vue3-notification": "^3.0.2",
+    "@vitejs/plugin-vue": "^4.4.0",
+    "axios": "^1.6.0",
+    "bulma": "^0.9.4",
+    "jwt-decode": "^4.0.0",
     "pinia": "^2.1.7",
     "vue-router": "^4.2.5"
   }

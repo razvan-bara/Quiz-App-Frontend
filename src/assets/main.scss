@@ -1,0 +1,29 @@
+// Customizations Here (Optional)
+router-link {
+  text-decoration: none;
+  color: inherit;
+}
+
+html, body, #app {
+  height: 100%
+}
+
+// Bulma Import
+@import 'bulma/bulma';
+
+.flex-form{
+  height: calc(100% - 25vh);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  max-width: 550px;
+}
+
+.flex-form-item {
+  flex: 1;
+}
+
+.custom-notif {
+  font-size: 0.9rem;
+}
