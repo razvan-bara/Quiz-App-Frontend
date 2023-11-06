@@ -5,6 +5,11 @@ export interface LoginForm {
     password: string
 }
 
+export interface LoginFormValidity {
+    email: boolean | null,
+    password: boolean | null
+}
+
 export interface JwtClaims extends JwtPayload {
     isAdmin: boolean,
 }
