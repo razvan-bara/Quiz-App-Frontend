@@ -31,8 +31,8 @@ const authStore = useAuthStore()
 
       <div class="navbar-end">
         <div class="navbar-item">
-          <div class="buttons" v-if="!authStore.getHasAuth()">
-            <router-link :to="{ name: 'login' }" class="button is-inverted is-primary">
+          <div class="buttons" v-if="!authStore.decideIfHasAuth">
+            <router-link :to="{ name: 'register' }" class="button is-inverted is-primary">
               Sign up
             </router-link>
             <router-link :to="{ name: 'login' }" class="button is-primary">
@@ -40,7 +40,7 @@ const authStore = useAuthStore()
             </router-link>
           </div>
           <div v-else class="buttons">
-            <button class="button is-dark">
+            <button class="button is-dark" v-if="authStore.decideIfIsAdmin">
               <span class="icon is-small mr-1">
                 <font-awesome-icon icon="fa-solid fa-user"/>
               </span>
