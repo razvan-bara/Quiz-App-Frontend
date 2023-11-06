@@ -15,28 +15,33 @@ export const useAuthStore = defineStore('auth', {
             accessToken: ""
         }
     },
-    actions: {
-        getHasAuth(): boolean {
-           if (this.hasAuth == null) {
-               const token = window.localStorage.getItem("token")
-               this.hasAuth = (token != null)
-           }
-
-           return this.hasAuth
-        },
-        getIsAdmin(): boolean{
-            if (this.isAdmin == null) {
+    getters: {
+        decideIfHasAuth: (state : AuthState) : boolean => {
+            let res : boolean = false
+            if (state.hasAuth == null) {
                 const token = window.localStorage.getItem("token")
-                if (token != null) {
-                    this.isAdmin = jwtDecode<JwtClaims>(token).isAdmin
-                }else {
-                    this.isAdmin = false
-                }
-
+                res = (token != null)
+            }else {
+                res = state.hasAuth
             }
 
-            return this.isAdmin
+            return res
         },
+        decideIfIsAdmin(state : AuthState) : boolean {
+            let res : boolean = false
+            if (state.isAdmin == null) {
+                const token = window.localStorage.getItem("token")
+                if (token != null) {
+                    res = jwtDecode<JwtClaims>(token).isAdmin
+                }
+            }else {
+                res = state.isAdmin
+            }
+
+            return res
+        }
+    },
+    actions: {
         logOut(): void {
             window.localStorage.removeItem("token")
             this.hasAuth = false
