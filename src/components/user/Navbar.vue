@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import {useAuthStore} from "@stores/authStore.ts";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
+const authStore = useAuthStore()
 </script>
 
 <template>
@@ -28,7 +31,7 @@
 
       <div class="navbar-end">
         <div class="navbar-item">
-          <div class="buttons">
+          <div class="buttons" v-if="!authStore.getHasAuth()">
             <router-link :to="{ name: 'login' }" class="button is-inverted is-primary">
               Sign up
             </router-link>
@@ -36,7 +39,19 @@
               Log in
             </router-link>
           </div>
+          <div v-else class="buttons">
+            <button class="button is-dark">
+              <span class="icon is-small mr-1">
+                <font-awesome-icon icon="fa-solid fa-user"/>
+              </span>
+              Admin
+            </button>
+            <button class="button is-primary" @click="authStore.logOut()">
+              Sign out
+            </button>
+          </div>
         </div>
+
       </div>
     </div>
   </nav>

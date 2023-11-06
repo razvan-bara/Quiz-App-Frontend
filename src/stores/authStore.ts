@@ -27,23 +27,27 @@ export const useAuthStore = defineStore('auth', {
         getIsAdmin(): boolean{
             if (this.isAdmin == null) {
                 const token = window.localStorage.getItem("token")
-                this.isAdmin = (token != null)
+                if (token != null) {
+                    this.isAdmin = jwtDecode<JwtClaims>(token).isAdmin
+                }else {
+                    this.isAdmin = false
+                }
+
             }
 
             return this.isAdmin
         },
-        deleteToken(): void {
+        logOut(): void {
             window.localStorage.removeItem("token")
-        },
-        saveToken(token: string): void {
-            window.localStorage.setItem("token", token)
-            console.log(jwtDecode<JwtClaims>(token))
+            this.hasAuth = false
+            this.isAdmin = false
+            this.accessToken = ""
         },
         setAuth(response : LoginResponse){
             this.hasAuth = true
             this.isAdmin = response.user.isAdmin
             this.accessToken = response.accessToken
-            this.saveToken(this.accessToken)
+            window.localStorage.setItem("token", this.accessToken)
         }
     }
 })
