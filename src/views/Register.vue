@@ -97,7 +97,7 @@ function submit() : void{
   registerUser(registerForm.value).then(res => {
     if (res.status === 200) {
       notification.notify({type:"success", title:"Registered successfully", text: "Log in with the new created account"});
-      router.push({ path: 'home' })
+      router.push({name: "home"})
     }
 
 

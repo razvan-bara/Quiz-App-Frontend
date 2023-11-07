@@ -10,7 +10,7 @@ const router = useRouter()
 function logoutUser(){
   authStore.logOut()
   notification.notify({type:"success", title: "Logged out successfully"})
-  router.push("home")
+  router.push({name: "home"})
 }
 </script>
 

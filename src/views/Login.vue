@@ -59,7 +59,7 @@ function submit() : void{
     if (res.status === 200) {
       authStore.setAuth(res.data)
       notification.notify({type:"success", title:"Logged in successfully"});
-      router.push({ path: 'home' })
+      router.push({name: "home"})
     }
 
 
