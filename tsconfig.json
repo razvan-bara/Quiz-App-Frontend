@@ -25,7 +25,8 @@
       "@stores/*": ["./src/stores/*"],
       "@services/*": ["./src/services/*"],
       "@views/*": ["./src/views/*"],
-      "@ctypes/*": ["./src/types/*"]
+      "@ctypes/*": ["./src/types/*"],
+      "@api/*": ["./src/api/*"],
     }
   },
   "include": ["src"]

@@ -15,6 +15,7 @@ export default defineConfig({
       '@ctypes/': `${path.resolve(__dirname, 'src/types')}/`,
       '@views/': `${path.resolve(__dirname, 'src/views')}/`,
       '@components/': `${path.resolve(__dirname, 'src/components')}/`,
+      '@api/': `${path.resolve(__dirname, 'src/api')}/`,
     }
   },
   css: {

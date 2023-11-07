@@ -1,15 +1,14 @@
-import axios from "axios";
-import {userApi} from "@/api.ts";
 import {LoginForm, RegisterForm} from "@/types/auth.ts";
+import {configureAxiosForUserAPI} from "@api/api.ts";
 
 const AUTH_ENDPOINTS = {
-    LOGIN: `${userApi}/login`,
-    REGISTER: `${userApi}/register`
+    LOGIN: `login`,
+    REGISTER: `register`
 }
 export async function loginUser(loginForm : LoginForm) {
-    return await axios.post<LoginResponse>(AUTH_ENDPOINTS.LOGIN, loginForm)
+    return await configureAxiosForUserAPI(AUTH_ENDPOINTS.LOGIN).post<LoginResponse>(AUTH_ENDPOINTS.LOGIN, loginForm)
 }
 
 export async function registerUser(registerForm : RegisterForm) {
-    return await axios.post(AUTH_ENDPOINTS.REGISTER, registerForm)
+    return await configureAxiosForUserAPI(AUTH_ENDPOINTS.REGISTER).post(AUTH_ENDPOINTS.REGISTER, registerForm)
 }
