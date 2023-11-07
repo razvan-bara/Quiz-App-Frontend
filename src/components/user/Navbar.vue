@@ -49,12 +49,12 @@ function logoutUser(){
             </router-link>
           </div>
           <div v-else class="buttons">
-            <button class="button is-dark" v-if="authStore.decideIfIsAdmin">
+            <router-link :to="{name: 'adminQuizzes'}" class="button is-dark" v-if="authStore.decideIfIsAdmin">
               <span class="icon is-small mr-1">
                 <font-awesome-icon icon="fa-solid fa-user"/>
               </span>
               Admin
-            </button>
+            </router-link>
             <button class="button is-primary" @click="logoutUser">
               Sign out
             </button>
