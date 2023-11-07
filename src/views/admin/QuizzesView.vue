@@ -1,9 +1,102 @@
 <script setup lang="ts">
+import {onMounted, ref} from "vue"
+import {Quiz} from "@/types/quiz.ts";
+import {fetchQuizzes} from "@services/quizService.ts";
+import ErrorCard from "@components/ErrorCard.vue";
+import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 
+let quizzes = ref<Quiz[]>([])
+let gotError = ref<boolean>(false)
+let errorMsg = ref<string>("")
+let isLoading = ref<boolean>(true)
+
+onMounted(() => {
+  fetchQuizzes().then(res => {
+
+    if(res.data.length == 0) {
+      gotError.value = true
+      errorMsg.value = "There are no available quizzes at the moment"
+    }
+
+    quizzes.value = res.data
+  }).catch(_ => {
+    gotError.value = true
+    errorMsg.value = "Something went wrong while fetching quizzes"
+  }).finally(() => {
+
+    isLoading.value = false
+  })
+})
+
+const computeDate = (date : string) : string => {
+  return new Date(date).toLocaleDateString()
+}
 </script>
 
 <template>
-<h1>Hello Admin</h1>
+
+  <div v-show="isLoading">Loading...</div>
+
+  <div v-if="gotError">
+    <ErrorCard :title=errorMsg message="Try again later" :eclass=0 />
+  </div>
+
+  <div v-else>
+    <section class="hero is-primary has-text-centered">
+      <div class="hero-body">
+        <p class="title">
+          Quizzes
+        </p>
+        <p class="subtitle">
+          All the available quizzes
+        </p>
+      </div>
+    </section>
+    <div class="container mt-4">
+      <nav class="level">
+        <div class="level-left">
+          <p class="level-item"><a class="button is-link">Add a new quiz</a></p>
+          <p class="level-item"><strong></strong></p>
+          <!--          <p class="level-item"><a>Published</a></p>-->
+          <!--          <p class="level-item"><a>Drafts</a></p>-->
+        </div>
+      </nav>
+      <div class="columns is-multiline is-vcentered">
+        <div v-for="quiz of quizzes" class="column is-one-third">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">{{quiz.title}}</p>
+              <button class="card-header-icon" aria-label="more options">
+                <span class="icon">
+                  <font-awesome-icon class="has-text-danger-dark" icon="fa-solid fa-eraser"/>
+                </span>
+              </button>
+            </header>
+            <div class="card-content">
+              <div class="content">
+                {{quiz.description}}
+                <br>
+                <br>
+                <time class="is-italic" datetime="2016-1-1">Added at {{computeDate(quiz.createdAt)}}</time>
+              </div>
+
+            </div>
+            <footer class="card-footer">
+              <a class="card-footer-item">
+                <span class="icon">
+                  <font-awesome-icon class="has-text-link" icon="fa-solid fa-pen"/>
+                </span>
+              </a>
+              <a class="card-footer-item">
+                  Publish
+              </a>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </template>
 
 <style scoped>
