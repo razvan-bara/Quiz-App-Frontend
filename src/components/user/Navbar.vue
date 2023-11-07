@@ -1,8 +1,17 @@
 <script setup lang="ts">
 import {useAuthStore} from "@stores/authStore.ts";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import {useNotification} from "@kyvg/vue3-notification";
+import {useRouter} from "vue-router";
 
 const authStore = useAuthStore()
+const notification   = useNotification()
+const router = useRouter()
+function logoutUser(){
+  authStore.logOut()
+  notification.notify({type:"success", title: "Logged out successfully"})
+  router.push("home")
+}
 </script>
 
 <template>
@@ -46,7 +55,7 @@ const authStore = useAuthStore()
               </span>
               Admin
             </button>
-            <button class="button is-primary" @click="authStore.logOut()">
+            <button class="button is-primary" @click="logoutUser">
               Sign out
             </button>
           </div>
