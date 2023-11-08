@@ -5,5 +5,6 @@ export interface Quiz {
     title: string,
     description: string,
     uuid: string,
-    createdAt: string
+    createdAt: string,
+    publishedAt: string
 }

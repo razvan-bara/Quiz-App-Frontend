@@ -31,6 +31,11 @@ onMounted(() => {
 const computeDate = (date : string) : string => {
   return new Date(date).toLocaleDateString()
 }
+
+const isNotPublished = (date : string) : boolean => {
+  const temp = new Date(date).getFullYear()
+  return  temp == 1 || temp == 1970
+}
 </script>
 
 <template>
@@ -87,8 +92,11 @@ const computeDate = (date : string) : string => {
                   <font-awesome-icon class="has-text-link" icon="fa-solid fa-pen"/>
                 </span>
               </a>
-              <a class="card-footer-item">
-                  Publish
+              <a v-if="isNotPublished(quiz.publishedAt)" class="card-footer-item" @click="quiz.publishedAt = new Date().toDateString()">
+                Publish
+              </a>
+              <a v-else class="card-footer-item" @click="quiz.publishedAt = new Date(-1).toDateString()">
+                Unpublish
               </a>
             </footer>
           </div>
