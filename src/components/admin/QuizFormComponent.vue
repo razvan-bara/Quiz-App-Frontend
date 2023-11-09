@@ -28,7 +28,7 @@ const hasQuestions = computed(() : boolean => {
 })
 
 const emits = defineEmits<{
-  emitQuizForm: [quizForm : QuizForm]
+  emitQuizForm: [quizForm : QuizForm, saveMode: string]
 }>()
 
 onMounted(() => {
@@ -163,12 +163,12 @@ function validateQuiz() : boolean {
 
   return true
 }
-function submit(){
+function submit(saveMode : string){
 
   if (!validateQuiz()) {
     return
   }
-  emits("emitQuizForm", quizForm.value)
+  emits("emitQuizForm", quizForm.value, saveMode)
 }
 
 </script>
@@ -177,7 +177,7 @@ function submit(){
   <section class="container mt-4 has-height">
     <div class="container is-max-desktop is-fullheight">
 
-      <form v-on:submit.prevent="submit" v-if="quizForm != undefined">
+      <form v-on:submit.prevent="" v-if="quizForm != undefined">
 
         <div class="field">
           <label class="label">Quiz title</label>
@@ -217,8 +217,9 @@ function submit(){
           </ul>
         </div>
 
-        <div class="control mt-2">
-          <button class="button is-primary">Submit</button>
+        <div class="control mt-2 buttons">
+          <button class="button is-primary" @click="submit('publish')">Publish</button>
+          <button class="button is-inverted is-primary" @click="submit('draft')">Save as draft</button>
         </div>
 
 

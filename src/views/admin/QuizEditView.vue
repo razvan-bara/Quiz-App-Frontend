@@ -5,6 +5,7 @@ import {editExistingQuiz, fetchCompleteQuiz} from "@services/quizService.ts";
 import {useNotification} from "@kyvg/vue3-notification";
 import {QuizForm} from "@/types/quizForm.ts";
 import {onMounted, ref} from "vue";
+import {useRouter} from "vue-router";
 
 const notification = useNotification()
 const foundQuiz = ref<boolean>(false)
@@ -13,11 +14,13 @@ const errorMsg = ref<string>()
 const props = defineProps({
   id: {type: String, required: true}
 })
-function editQuiz(quizForm : QuizForm){
-  editExistingQuiz(quizForm, Number(props.id)).then( res => {
+const router = useRouter()
+function editQuiz(quizForm : QuizForm, saveMode : string){
+  editExistingQuiz(quizForm, Number(props.id), saveMode).then( res => {
 
     if (res.status == 200) {
       notification.notify({type: 'success', title: 'Quiz edited'})
+      router.push({name: 'adminQuizzes'})
     }
 
   }).catch( _ => {

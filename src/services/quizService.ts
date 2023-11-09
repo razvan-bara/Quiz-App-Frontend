@@ -6,16 +6,16 @@ const QUIZ_ENDPOINTS = {
     QUIZZES: "quizzes"
 }
 
-export async function fetchQuizzes(){
-    return await configureAxiosForQuizAPI(QUIZ_ENDPOINTS.QUIZZES).get<Quiz[]>(QUIZ_ENDPOINTS.QUIZZES)
+export async function fetchQuizzes(status : string){
+    return await configureAxiosForQuizAPI(QUIZ_ENDPOINTS.QUIZZES).get<Quiz[]>(`${QUIZ_ENDPOINTS.QUIZZES}?status=${status}`)
 }
 
-export async function addNewQuiz(quizForm : QuizForm){
-    return await configureAxiosForQuizAPI(QUIZ_ENDPOINTS.QUIZZES).post<Quiz[]>(QUIZ_ENDPOINTS.QUIZZES, quizForm)
+export async function addNewQuiz(quizForm : QuizForm, saveMode : string){
+    return await configureAxiosForQuizAPI(QUIZ_ENDPOINTS.QUIZZES).post<QuizForm>(`${QUIZ_ENDPOINTS.QUIZZES}?saveMode=${saveMode}`, quizForm)
 }
 
-export async function editExistingQuiz(quizForm : QuizForm, quizID : number){
-    return await configureAxiosForQuizAPI(QUIZ_ENDPOINTS.QUIZZES).put<QuizForm>(`${QUIZ_ENDPOINTS.QUIZZES}/${quizID}`, quizForm)
+export async function editExistingQuiz(quizForm : QuizForm, quizID : number, saveMode : string){
+    return await configureAxiosForQuizAPI(QUIZ_ENDPOINTS.QUIZZES).put<QuizForm>(`${QUIZ_ENDPOINTS.QUIZZES}/${quizID}?saveMode=${saveMode}`, quizForm)
 }
 
 export async function fetchCompleteQuiz(quizID : number){

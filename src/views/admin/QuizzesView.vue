@@ -9,9 +9,15 @@ let quizzes = ref<Quiz[]>([])
 let gotError = ref<boolean>(false)
 let errorMsg = ref<string>("")
 let isLoading = ref<boolean>(true)
+const actives = ref<boolean[]>([false,false,false])
 
-onMounted(() => {
-  fetchQuizzes().then(res => {
+function getQuizzes(status : string, idx : number){
+
+  for (let i = 0; i < actives.value.length; i++) {
+    actives.value[i] = idx == i;
+  }
+
+  fetchQuizzes(status).then(res => {
 
     if(res.data.length == 0) {
       gotError.value = true
@@ -26,6 +32,10 @@ onMounted(() => {
 
     isLoading.value = false
   })
+}
+
+onMounted(() => {
+  getQuizzes("all", 0)
 })
 
 const computeDate = (date : string) : string => {
@@ -62,8 +72,11 @@ const isNotPublished = (date : string) : boolean => {
         <div class="level-left">
           <p class="level-item"><router-link :to="{name: 'quizAdd'}" class="button is-link">Add a new quiz</router-link></p>
           <p class="level-item"><strong></strong></p>
-          <!--          <p class="level-item"><a>Published</a></p>-->
-          <!--          <p class="level-item"><a>Drafts</a></p>-->
+        </div>
+        <div class="level-right">
+          <p class="level-item" :class="{'has-text-weight-bold': actives[0]}" @click="getQuizzes('all', 0)"><a>All</a></p>
+          <p class="level-item" :class="{'has-text-weight-bold': actives[1]}" @click="getQuizzes('published', 1)"><a>Published</a></p>
+          <p class="level-item" :class="{'has-text-weight-bold': actives[2]}" @click="getQuizzes('draft', 2)"><a>Drafts</a></p>
         </div>
       </nav>
       <div class="columns is-multiline is-vcentered">
@@ -83,6 +96,18 @@ const isNotPublished = (date : string) : boolean => {
                 <br>
                 <br>
                 <time class="is-italic" datetime="2016-1-1">Added at {{computeDate(quiz.createdAt)}}</time>
+                <p v-if="isNotPublished(quiz.publishedAt)" class="has-text-weight-bold">
+                  Saved as draft
+                  <br>
+                  <span class="tag is-info is-light">Draft</span>
+                </p>
+                <p v-else>
+                  <time class="is-italic has-text-weight-light" datetime="2016-1-1">
+                    Published at {{computeDate(quiz.publishedAt)}}
+                  </time>
+                  <br>
+                  <span class="tag is-primary is-light has-text-weight-bold">Published</span>
+                </p>
               </div>
 
             </div>
@@ -92,12 +117,6 @@ const isNotPublished = (date : string) : boolean => {
                   <font-awesome-icon class="has-text-link" icon="fa-solid fa-pen"/>
                 </span>
               </router-link>
-              <a v-if="isNotPublished(quiz.publishedAt)" class="card-footer-item" @click="quiz.publishedAt = new Date().toDateString()">
-                Publish
-              </a>
-              <a v-else class="card-footer-item" @click="quiz.publishedAt = new Date(-1).toDateString()">
-                Unpublish
-              </a>
             </footer>
           </div>
         </div>
