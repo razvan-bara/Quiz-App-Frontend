@@ -8,6 +8,8 @@ export const userApi : string = `${host}:3002`
 function needsAuthenticationHeader(route : string) : boolean {
     switch (route) {
         case "quizzes":
+        case "questions":
+        case "answers":
             return true
     }
     return false
