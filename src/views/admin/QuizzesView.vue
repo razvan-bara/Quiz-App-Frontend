@@ -60,7 +60,7 @@ const isNotPublished = (date : string) : boolean => {
     <div class="container mt-4">
       <nav class="level">
         <div class="level-left">
-          <p class="level-item"><a class="button is-link">Add a new quiz</a></p>
+          <p class="level-item"><router-link :to="{name: 'quizAdd'}" class="button is-link">Add a new quiz</router-link></p>
           <p class="level-item"><strong></strong></p>
           <!--          <p class="level-item"><a>Published</a></p>-->
           <!--          <p class="level-item"><a>Drafts</a></p>-->
@@ -70,7 +70,7 @@ const isNotPublished = (date : string) : boolean => {
         <div v-for="quiz of quizzes" class="column is-one-third">
           <div class="card">
             <header class="card-header">
-              <p class="card-header-title">{{quiz.title}}</p>
+              <p class="card-header-title">{{ quiz.title }}</p>
               <button class="card-header-icon" aria-label="more options">
                 <span class="icon">
                   <font-awesome-icon class="has-text-danger-dark" icon="fa-solid fa-eraser"/>
@@ -87,11 +87,11 @@ const isNotPublished = (date : string) : boolean => {
 
             </div>
             <footer class="card-footer">
-              <a class="card-footer-item">
+              <router-link :to="{name: 'quizEdit', params: {id: quiz.ID}}" class="card-footer-item">
                 <span class="icon">
                   <font-awesome-icon class="has-text-link" icon="fa-solid fa-pen"/>
                 </span>
-              </a>
+              </router-link>
               <a v-if="isNotPublished(quiz.publishedAt)" class="card-footer-item" @click="quiz.publishedAt = new Date().toDateString()">
                 Publish
               </a>

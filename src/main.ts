@@ -4,7 +4,16 @@ import router from "./router/router.ts";
 import "./assets/main.scss"
 import {createPinia, Pinia} from "pinia";
 import {library} from "@fortawesome/fontawesome-svg-core";
-import {faCheck, faEnvelope, faEraser, faLock, faPen, faUser} from "@fortawesome/free-solid-svg-icons";
+import {
+    faCaretDown,
+    faCaretUp,
+    faCheck,
+    faEnvelope,
+    faEraser,
+    faLock,
+    faPen,
+    faUser
+} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
 import Notifications from '@kyvg/vue3-notification'
 
@@ -14,7 +23,9 @@ library.add(
     faCheck,
     faUser,
     faPen,
-    faEraser
+    faEraser,
+    faCaretDown,
+    faCaretUp
 )
 
 const pinia : Pinia = createPinia()
