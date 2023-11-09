@@ -8,6 +8,7 @@ import {onMounted, ref} from "vue";
 import {useRouter} from "vue-router";
 
 const notification = useNotification()
+const isLoading = ref<boolean>(true)
 const foundQuiz = ref<boolean>(false)
 const existingQuizForm : QuizForm = new QuizForm()
 const errorMsg = ref<string>()
@@ -42,6 +43,8 @@ onMounted(() => {
     } else if (status <= 600) {
       errorMsg.value = "Server error, try again later"
     }
+  }).finally(() =>{
+    isLoading.value = false
   })
 
 })
@@ -49,7 +52,10 @@ onMounted(() => {
 </script>
 
 <template>
-  <div v-if="foundQuiz">
+
+  <div v-if="isLoading">Loading...</div>
+
+  <div v-else-if="foundQuiz">
     <section class="hero is-info" >
       <div class="hero-body">
         <p class="title has-text-centered">
