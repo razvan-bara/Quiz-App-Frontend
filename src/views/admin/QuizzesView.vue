@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import {onMounted, ref} from "vue"
 import {Quiz} from "@/types/quiz.ts";
-import {fetchQuizzes} from "@services/quizService.ts";
+import {deleteQuiz, fetchQuizzes} from "@services/quizService.ts";
 import ErrorCard from "@components/ErrorCard.vue";
 import {FontAwesomeIcon} from "@fortawesome/vue-fontawesome";
+import {useNotification} from "@kyvg/vue3-notification";
 
 let quizzes = ref<Quiz[]>([])
 let gotError = ref<boolean>(false)
 let errorMsg = ref<string>("")
 let isLoading = ref<boolean>(true)
 const actives = ref<boolean[]>([false,false,false])
+let quizToBeDeleted : number = 0
+let quizIndexToBeDeleted : number = 0
+const showQuizModal = ref<boolean>(false)
+const notification = useNotification()
 
 function getQuizzes(status : string, idx : number){
 
@@ -46,6 +51,24 @@ const isNotPublished = (date : string) : boolean => {
   const temp = new Date(date).getFullYear()
   return  temp == 1 || temp == 1970
 }
+
+function showDeleteModal(id : number, idx : number){
+  quizToBeDeleted = id
+  quizIndexToBeDeleted = idx
+  showQuizModal.value = true
+}
+
+function deleteQuizModal(){
+  showQuizModal.value = false
+  deleteQuiz(quizToBeDeleted).then(res => {
+    if(res.status == 204){
+      quizzes.value.splice(quizIndexToBeDeleted, 1)
+      notification.notify({type: "success", title: "Quiz deleted"})
+    }
+  }).catch(_ => {
+    notification.notify({type: "error", title: "Error while deleting quiz"})
+  })
+}
 </script>
 
 <template>
@@ -80,12 +103,12 @@ const isNotPublished = (date : string) : boolean => {
         </div>
       </nav>
       <div class="columns is-multiline is-vcentered">
-        <div v-for="quiz of quizzes" class="column is-one-third">
+        <div v-for="(quiz, idx) of quizzes" class="column is-one-third">
           <div class="card">
             <header class="card-header">
               <p class="card-header-title">{{ quiz.title }}</p>
-              <button class="card-header-icon" aria-label="more options">
-                <span class="icon">
+              <button class="card-header-icon">
+                <span class="icon" @click="showDeleteModal(quiz.ID, idx)">
                   <font-awesome-icon class="has-text-danger-dark" icon="fa-solid fa-eraser"/>
                 </span>
               </button>
@@ -121,6 +144,28 @@ const isNotPublished = (date : string) : boolean => {
           </div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="modal is-active" v-if="showQuizModal">
+    <div class="modal-background"></div>
+    <div class="modal-content">
+      <article class="message is-danger">
+        <div class="message-header">
+          <p>Warning</p>
+        </div>
+        <div class="message-body">
+          Are you sure you want to delete this quiz?
+          <br>
+          All questions and answers for this quiz will be deleted too.
+          <div class="buttons are-small is-right">
+            <button class="button is-outlined is-danger" @click="showQuizModal = false">Cancel</button>
+            <button
+                class="button is-danger"
+                @click="deleteQuizModal">Confirm</button>
+          </div>
+        </div>
+      </article>
     </div>
   </div>
 

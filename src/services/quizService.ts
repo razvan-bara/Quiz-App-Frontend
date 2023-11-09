@@ -21,3 +21,6 @@ export async function editExistingQuiz(quizForm : QuizForm, quizID : number, sav
 export async function fetchCompleteQuiz(quizID : number){
     return await configureAxiosForQuizAPI(QUIZ_ENDPOINTS.QUIZZES).get<QuizForm>(`${QUIZ_ENDPOINTS.QUIZZES}/${quizID}`)
 }
+export async function deleteQuiz(quizID : number){
+    return await configureAxiosForQuizAPI(QUIZ_ENDPOINTS.QUIZZES).delete(`${QUIZ_ENDPOINTS.QUIZZES}/${quizID}`)
+}
