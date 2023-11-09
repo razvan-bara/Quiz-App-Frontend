@@ -50,6 +50,11 @@ function attemptToDeleteQuestion(id : number, index : number, needConfirmation :
     return
   }
 
+  if(props.isEdit && id > 0 && !quizForm.value.hasAtLeastThreeQuestionStored()){
+    notification.notify({type: 'error', title: 'Quiz should have a minimum of 2 stored questions'})
+    return;
+  }
+
   if((id > 0 || quizForm.value.questions[index].answers.length >= 1) && needConfirmation) {
 
     showQuestionModal.value = true
@@ -122,8 +127,8 @@ function validateQuiz() : boolean {
   }
 
   for (const question of quizForm.value.questions) {
-    if(question.title.length < 5){
-      notification.notify({type: "error", title: "Each question's title must be minimum 5 characters long"})
+    if(question.title.length < 10){
+      notification.notify({type: "error", title: "Each question's title must be minimum 10 characters long"})
       return false
     }
 

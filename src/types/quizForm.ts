@@ -26,6 +26,20 @@ export class QuizForm {
         this.questions[questionIndex].answers.splice(index, 1)
     }
 
+    hasAtLeastThreeQuestionStored(){
+        let count = 0
+        for (const q of this.questions) {
+            if(q.ID > 0){
+                count++
+            }
+
+            if(count >= 3){
+                return true
+            }
+        }
+        return false
+    }
+
     clone(temp: QuizForm) {
         this.title = temp.title
         this.description = temp.description
