@@ -9,15 +9,19 @@ import {onMounted, ref} from "vue";
 const notification = useNotification()
 const foundQuiz = ref<boolean>(false)
 const existingQuizForm : QuizForm = new QuizForm()
+const errorMsg = ref<string>()
 const props = defineProps({
   id: {type: String, required: true}
 })
 function editQuiz(quizForm : QuizForm){
   editExistingQuiz(quizForm, Number(props.id)).then( res => {
+
     if (res.status == 200) {
       notification.notify({type: 'success', title: 'Quiz edited'})
     }
+
   }).catch( _ => {
+
     notification.notify({type: 'error', title: 'Could not edit quiz'})
   })
 }
@@ -26,11 +30,15 @@ onMounted(() => {
 
   fetchCompleteQuiz(Number(props.id)).then(res => {
     existingQuizForm.clone(res.data)
-    console.log(existingQuizForm)
     foundQuiz.value = true
   }).catch(err => {
     console.log(err)
-    notification.notify({type: 'error', title: 'Could fetch not existing quiz'})
+    const status = err.response.status
+    if (status <= 500) {
+      errorMsg.value = "Couldn't find quiz"
+    } else if (status <= 600) {
+      errorMsg.value = "Server error, try again later"
+    }
   })
 
 })
@@ -38,17 +46,27 @@ onMounted(() => {
 </script>
 
 <template>
-  <section class="hero is-info">
+  <div v-if="foundQuiz">
+    <section class="hero is-info" >
+      <div class="hero-body">
+        <p class="title has-text-centered">
+          Edit a quiz
+        </p>
+      </div>
+    </section>
+    <QuizFormComponent
+        :existing-quiz-form="existingQuizForm"
+        :is-edit="true"
+        @emit-quiz-form="editQuiz"
+    />
+  </div>
+  <section v-else class="hero is-danger" >
     <div class="hero-body">
       <p class="title has-text-centered">
-        Edit a quiz
+        {{ errorMsg }}
       </p>
     </div>
   </section>
-  <QuizFormComponent v-if="foundQuiz"
-      :existing-quiz-form="existingQuizForm"
-      @emit-quiz-form="editQuiz"
-  />
 </template>
 
 <style scoped>

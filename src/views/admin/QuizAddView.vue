@@ -28,6 +28,7 @@ function addQuiz(quizForm : QuizForm){
   </section>
   <QuizFormComponent
     @emit-quiz-form="addQuiz"
+    :is-edit="false"
   />
 </template>
 

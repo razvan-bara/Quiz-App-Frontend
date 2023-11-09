@@ -7,7 +7,8 @@ import {useNotification} from "@kyvg/vue3-notification";
 import {deleteQuestion} from "@services/questionService.ts";
 
 const props = defineProps({
-  existingQuizForm: {type: QuizForm, required: false}
+  existingQuizForm: {type: QuizForm, required: false},
+  isEdit: {type: Boolean, required: true, default: false}
 })
 
 const quizForm = ref<QuizForm>(new QuizForm())
@@ -44,7 +45,12 @@ function addQuestion(){
 }
 function attemptToDeleteQuestion(id : number, index : number, needConfirmation : boolean){
 
-  if(needConfirmation) {
+  if(props.isEdit && quizForm.value.questions.length <= 2){
+    notification.notify({type: 'error', title: 'Quiz should have a minimum of 2 remanding questions'})
+    return
+  }
+
+  if((id > 0 || quizForm.value.questions[index].answers.length >= 1) && needConfirmation) {
 
     showQuestionModal.value = true
     questionIndexToDelete = index
@@ -77,7 +83,13 @@ function attemptToDeleteQuestion(id : number, index : number, needConfirmation :
 }
 
 function attemptToDeleteAnswer(id : number, questionIndex: number, index : number,  needConfirmation : boolean){
-  if(needConfirmation) {
+
+  if(props.isEdit && quizForm.value.questions[questionIndex].answers.length <= 2){
+    notification.notify({type: 'error', title: 'Question should have a minimum of 2 remanding answers'})
+    return
+  }
+
+  if(id > 0 && needConfirmation) {
 
     showAnswerModal.value = true
     answerIndexToDelete = index
