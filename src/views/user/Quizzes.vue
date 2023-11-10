@@ -36,11 +36,18 @@ function getAllQuizzes(page : number, search : string){
 }
 
 function resetSearch() {
+  if(search.value == "" && currentPage.value == 0){
+    return
+  }
   search.value = ""
   currentPage.value = 0
   getAllQuizzes(currentPage.value, search.value)
 }
 function fetchPage(num : number){
+
+  if(search.value == "" && num == 0){
+    return
+  }
 
   if(num == 0){
     currentPage.value = 0
