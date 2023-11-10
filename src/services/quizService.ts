@@ -6,8 +6,16 @@ const QUIZ_ENDPOINTS = {
     QUIZZES: "quizzes"
 }
 
-export async function fetchQuizzes(status : string){
-    return await configureAxiosForQuizAPI(QUIZ_ENDPOINTS.QUIZZES).get<Quiz[]>(`${QUIZ_ENDPOINTS.QUIZZES}?status=${status}`)
+export async function fetchQuizzes(status : string, page? : number, search? : string){
+
+    let url = `${QUIZ_ENDPOINTS.QUIZZES}?status=${status}`;
+    if(page != undefined){
+        url += `&page=${page}`
+    }
+    if(search != undefined && search != ""){
+        url += `&search=${search}`
+    }
+    return await configureAxiosForQuizAPI(QUIZ_ENDPOINTS.QUIZZES).get<Quiz[]>(url)
 }
 
 export async function addNewQuiz(quizForm : QuizForm, saveMode : string){
