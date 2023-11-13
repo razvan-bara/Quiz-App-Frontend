@@ -5,6 +5,7 @@ import "./assets/main.scss"
 import {createPinia, Pinia} from "pinia";
 import {library} from "@fortawesome/fontawesome-svg-core";
 import {
+    faAngleDown,
     faCaretDown,
     faCaretUp,
     faCheck,
@@ -25,7 +26,8 @@ library.add(
     faPen,
     faEraser,
     faCaretDown,
-    faCaretUp
+    faCaretUp,
+    faAngleDown
 )
 
 const pinia : Pinia = createPinia()

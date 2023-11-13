@@ -48,16 +48,25 @@ function logoutUser(){
               Log in
             </router-link>
           </div>
-          <div v-else class="buttons">
-            <router-link :to="{name: 'adminQuizzes'}" class="button is-dark" v-if="authStore.decideIfIsAdmin">
-              <span class="icon is-small mr-1">
-                <font-awesome-icon icon="fa-solid fa-user"/>
-              </span>
-              Admin
-            </router-link>
-            <button class="button is-primary" @click="logoutUser">
-              Sign out
-            </button>
+          <div v-else class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link">
+                Menu
+              </a>
+              <div class="navbar-dropdown is-right" id="dropdown-menu" role="menu">
+                <router-link :to="{name: 'adminQuizzes'}" class=" navbar-item is-dark" v-if="authStore.decideIfIsAdmin">
+                  Profile
+                </router-link>
+                <router-link :to="{name: 'adminQuizzes'}" class=" navbar-item is-dark" v-if="authStore.decideIfIsAdmin">
+                  <span class="icon is-small mr-1">
+                    <font-awesome-icon icon="fa-solid fa-user"/>
+                  </span>
+                  Admin
+                </router-link>
+                <hr class="navbar-divider">
+                <a class="navbar-item" @click="logoutUser">
+                  Sign out
+                </a>
+              </div>
           </div>
         </div>
 
