@@ -10,6 +10,9 @@ function needsAuthenticationHeader(route : string) : boolean {
         case "quizzes":
         case "questions":
         case "answers":
+        case "quizzes/:quizID/attempts":
+        case "quizzes/:quizID/attempts/:attemptID":
+        case "quizzes/:quizID/attempts/:attemptID/answers":
             return true
     }
     return false

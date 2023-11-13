@@ -2,6 +2,9 @@
 import {onMounted, ref} from "vue";
 import {Quiz} from "@/types/quiz.ts";
 import {fetchQuizzes} from "@services/quizService.ts";
+import {createAttempt} from "@services/attemptService.ts";
+import {useNotification} from "@kyvg/vue3-notification";
+import {useRouter} from "vue-router";
 
 const isLoading = ref<boolean>(true)
 const isError = ref<boolean>(false)
@@ -10,7 +13,7 @@ const errorMsg = ref<string>("")
 const currentPage = ref<number>(0)
 const quizzes = ref<Quiz[]>([])
 const nextQuizzes = ref<Quiz[]>([])
-
+const router = useRouter()
 function getAllQuizzes(page : number, search : string){
   isLoading.value = true
   fetchQuizzes("published", page, search).then(res => {
@@ -56,6 +59,23 @@ function fetchPage(num : number){
   }
 
   getAllQuizzes(currentPage.value, search.value)
+}
+
+function initQuizAttempt(e : Event, quizID: number){
+  const el = e.target as Element
+  el.classList.add("is-loading")
+  console.log(quizID)
+  createAttempt(quizID).then(res => {
+    if(res.status == 201){
+      router.push({name: "attempt", params: {quizId: res.data.quizId, attemptId: res.data.ID}})
+    }
+  }).catch(_ => {
+
+    const notify = useNotification()
+    notify.notify({type: "error", title: "Error while creating quiz attempt"})
+  }).finally( () => {
+    el.classList.remove("is-loading")
+  })
 }
 
 onMounted( () => {
@@ -117,7 +137,7 @@ onMounted( () => {
             <h3 class="level-item">{{ quiz.title }}</h3>
           </div>
           <div class="level-right">
-            <button class="level-item button is-success">Attempt quiz</button>
+            <button class="level-item button is-success" @click="initQuizAttempt($event, quiz.ID)">Attempt quiz</button>
           </div>
         </div>
         <h4>Description:</h4>
