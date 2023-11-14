@@ -11,6 +11,7 @@ import QuizAddView from "@views/admin/QuizAddView.vue";
 import QuizEditView from "@views/admin/QuizEditView.vue";
 import {notify} from "@kyvg/vue3-notification";
 import AttemptQuiz from "@views/user/AttemptQuiz.vue";
+import Profile from "@views/user/Profile.vue";
 
 const routes = [
     { path: '/', name: 'home', component: Home },
@@ -21,6 +22,7 @@ const routes = [
     { path: '/admin/quizzes/create', name: 'quizAdd', component: QuizAddView},
     { path: '/admin/quizzes/:id', name: 'quizEdit', component: QuizEditView, props: true},
     { path: '/quiz/:quizId:/attempt/:attemptId', name: 'attempt', component: AttemptQuiz, props: true},
+    { path: '/profile', name: 'profile', component: Profile},
     { path: '/:pathMatch(.*)*', name: 'notFound', component: NotFound },
     { path: '/unauthorised', name: 'unauthorised', component: Unauthorised }
 ]

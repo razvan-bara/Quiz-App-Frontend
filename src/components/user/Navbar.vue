@@ -53,10 +53,10 @@ function logoutUser(){
                 Menu
               </a>
               <div class="navbar-dropdown is-right" id="dropdown-menu" role="menu">
-                <router-link :to="{name: 'adminQuizzes'}" class=" navbar-item is-dark" v-if="authStore.decideIfIsAdmin">
+                <router-link :to="{name: 'profile'}" class=" navbar-item">
                   Profile
                 </router-link>
-                <router-link :to="{name: 'adminQuizzes'}" class=" navbar-item is-dark" v-if="authStore.decideIfIsAdmin">
+                <router-link :to="{name: 'adminQuizzes'}" class=" navbar-item" v-if="authStore.decideIfIsAdmin">
                   <span class="icon is-small mr-1">
                     <font-awesome-icon icon="fa-solid fa-user"/>
                   </span>
