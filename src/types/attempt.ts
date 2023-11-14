@@ -1,4 +1,5 @@
 import {QuizForm} from "@/types/quizForm.ts";
+import {Quiz} from "@/types/quiz.ts";
 
 export enum AttemptStatus {
     NotStarted,
@@ -28,6 +29,11 @@ export interface Attempt {
     "quizId": number,
     "UUID": string,
     "createdAt": string
+}
+
+export interface AttemptWithQuiz {
+    attemptDTO: Attempt,
+    quizDTO: Quiz
 }
 
 export interface GetAttemptResponseBody {
