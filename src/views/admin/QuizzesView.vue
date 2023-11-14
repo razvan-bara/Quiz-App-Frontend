@@ -24,10 +24,10 @@ function getQuizzes(status : string, idx : number){
 
   fetchQuizzes(status).then(res => {
 
-    if(res.data.length == 0) {
-      gotError.value = true
-      errorMsg.value = "There are no available quizzes at the moment"
-    }
+    // if(res.data.length == 0) {
+    //   gotError.value = true
+    //   errorMsg.value = "There are no available quizzes at the moment"
+    // }
 
     quizzes.value = res.data
   }).catch(_ => {
@@ -54,6 +54,7 @@ const isNotPublished = (date : string) : boolean => {
 
 function showDeleteModal(id : number, idx : number){
   quizToBeDeleted = id
+  console.log(quizToBeDeleted)
   quizIndexToBeDeleted = idx
   showQuizModal.value = true
 }
@@ -65,7 +66,8 @@ function deleteQuizModal(){
       quizzes.value.splice(quizIndexToBeDeleted, 1)
       notification.notify({type: "success", title: "Quiz deleted"})
     }
-  }).catch(_ => {
+  }).catch(err => {
+    console.log(err)
     notification.notify({type: "error", title: "Error while deleting quiz"})
   })
 }

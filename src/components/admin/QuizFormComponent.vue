@@ -116,10 +116,10 @@ function validateQuiz() : boolean {
     return false
   }
 
-  if(!quizForm.value.description.length){
-    notification.notify({type: "error", title: "Description must not be empty must"})
-    return false
-  }
+  // if(!quizForm.value.description.length){
+  //   notification.notify({type: "error", title: "Description must not be empty must"})
+  //   return false
+  // }
 
   if(quizForm.value.questions.length < 2){
     notification.notify({type: "error", title: "Quiz must have a minimum of two questions"})
@@ -132,10 +132,10 @@ function validateQuiz() : boolean {
       return false
     }
 
-    if(!question.body.length){
-      notification.notify({type: "error", title: "Each question's body must not be empty"})
-      return false
-    }
+    // if(!question.body.length){
+    //   notification.notify({type: "error", title: "Each question's body must not be empty"})
+    //   return false
+    // }
 
     if(question.answers.length < 2){
       notification.notify({type: "error", title: "Each question must have at least 2 answers"})
