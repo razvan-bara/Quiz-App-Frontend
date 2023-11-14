@@ -22,6 +22,7 @@ const props = defineProps({
   quizId: {type: String, required: true},
   attemptId: {type: String, required: true}
 })
+
 const activeQuestion = ref<QuizQuestion>(new QuizQuestion())
 let activeQuestionIdx : number = -1
 const score = ref<number>(0)
@@ -29,8 +30,15 @@ const score = ref<number>(0)
 onMounted(() => {
   fetchAttempt(props.quizId, props.attemptId).then(res => {
     if(res.status == 200) {
-      attempt.value = res.data.attemptDTO
-      quizForm.value = res.data.quizForm
+      if (res.data.attemptDTO.status == undefined){
+        attempt.value = res.data.attemptDTO
+        quizForm.value = res.data.quizForm
+      }else{
+        console.log("here")
+        isError.value = true
+        errorMsg.value = "This attempt has already been started"
+      }
+
     }
   }).catch(_ => {
     isError.value = true
@@ -56,6 +64,7 @@ function setNextActiveQuestion(){
 function startQuiz(){
   quizNotStarted.value = false
   timeRemainding.value = quizForm.value!.questions.length * 10
+  delegateUpdateAttempt()
   setNextActiveQuestion()
   const id = setInterval(() => {
     timeRemainding.value -= timeRemainding.value > 0 ? 1 : 0
@@ -79,7 +88,9 @@ function delegateUpdateAttempt(){
       return
     }
 
-  if (attempt.value.status === undefined || attempt.value.status == AttemptStatus.NotStarted){
+  if (attempt.value.status === undefined || attempt.value.status == AttemptStatus.NotStarted) {
+    attempt.value.status = AttemptStatus.Started
+  } else if(attempt.value.status == AttemptStatus.Started) {
     attempt.value.status = AttemptStatus.InProgress
   }else if( ( activeQuestionIdx == quizForm.value!.questions.length - 1 || timeRemainding.value == 0 )  && attempt.value.status == AttemptStatus.InProgress) {
     attempt.value.status = AttemptStatus.Finished
@@ -94,7 +105,7 @@ function delegateUpdateAttempt(){
 
 function pickAnswer(index: number){
   const pickedAnswer = activeQuestion.value.answers[index];
-  score.value += pickedAnswer.correct ? 10 / quizForm.value!.questions.length : 0
+  score.value += pickedAnswer.correct ? (10 / quizForm.value!.questions.length) : 0
   prog.value += 10 / quizForm.value!.questions.length * 10
   attempt.value!.score = score.value
   saveAnswer(pickedAnswer)
@@ -144,13 +155,13 @@ function pickAnswer(index: number){
           </div>
           <div class="level-item">
             <p class="subtitle is-5">
-              Score {{ score*10 }} %
+              Score {{ (score*10).toFixed(2) }}%
             </p>
           </div>
         </div>
 
         <div class="level-right">
-          <p class="level-item"><strong>Question {{activeQuestionIdx+1}} / 2</strong></p>
+          <p class="level-item"><strong>Question {{activeQuestionIdx+1}} / {{quizForm.questions.length}}</strong></p>
           <progress class="progress is-small level-item" :value="prog" max="100">20%</progress>
         </div>
 
@@ -171,7 +182,7 @@ function pickAnswer(index: number){
           The quiz has been finished
       </p>
       <p class="subtitle">
-        Final score: {{score*10}}%
+        Final score: {{(score*10).toFixed(2)}}%
       </p>
     </div>
   </section>

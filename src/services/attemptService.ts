@@ -1,11 +1,21 @@
 import {configureAxiosForQuizAPI} from "@api/api.ts";
-import {Attempt, GetAttemptResponseBody} from "@/types/attempt.ts";
+import {Attempt, AttemptStatus, AttemptWithQuiz, GetAttemptResponseBody} from "@/types/attempt.ts";
 import {Answer} from "@/types/answer.ts";
 
 const ATTEMPT_ENDPOINTS = {
     QUIZ_ATTEMPTS: "quizzes/:quizID/attempts",
     QUIZ_ATTEMPT: "quizzes/:quizID/attempts/:attemptID",
-    QUIZ_ATTEMPT_ANSWERS: "quizzes/:quizID/attempts/:attemptID/answers"
+    QUIZ_ATTEMPT_ANSWERS: "quizzes/:quizID/attempts/:attemptID/answers",
+    ATTEMPTS: "attempts"
+}
+
+export async function fetchAttempts(status? : AttemptStatus){
+    let url = ATTEMPT_ENDPOINTS.ATTEMPTS
+    if (status != undefined){
+        url += `?attemptStatus=${status}`
+    }
+
+    return await configureAxiosForQuizAPI(ATTEMPT_ENDPOINTS.ATTEMPTS).get<AttemptWithQuiz[]>(url)
 }
 
 export async function fetchAttempt(quizID : string, attemptID : string){
